@@ -1,0 +1,11 @@
+{
+  "name": "backend-challenge-bot",
+  "version": "1.0.0",
+  "description": "Backend Challenge Bot",
+  "main": "bot.js",
+  "author": "Piyush Tyagi",
+  "dependencies": {
+    "discord.io": "^2.5.3",
+    "winston": "^3.2.1"
+  }
+}
