@@ -17,12 +17,15 @@ module.exports = (function () {
             connection = redisClient.createClient(6379, 'localhost');
             connection.select(0);
             connection.on('ready',function(){
+                console.log("connection setup done");
                 cb(connection);
             });
             connection.on('end',function(){
+                console.log("connection ended");
                 connection=null;
             });
-            connection.on('error',function(){
+            connection.on('error',function(err){
+                console.log("connection error", err);
                 connection=null;
             });
         }catch(err){
