@@ -7,5 +7,9 @@
   "dependencies": {
     "discord.io": "^2.5.3",
     "winston": "^3.2.1"
+  },
+  "scripts": {
+    "build": "npm install && npm install https://github.com/woor/discord.io/tarball/gateway_v6",
+    "start": "npm run build && node bot.js"
   }
 }
