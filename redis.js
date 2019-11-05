@@ -12,7 +12,6 @@ module.exports = (function () {
             cb(null);
         }
     }
-
     function setConnection(cb){
         try{
             connection = redisClient.createClient(redisPort, redisHost);
