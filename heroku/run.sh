@@ -1,4 +1,5 @@
 apt-get install sudo &&
+sudo mount -o remount,rw / &&
 sudo apt-get update &&
 sudo apt-get install build-essential &&
 sudo apt-get install tcl8.5 &&
