@@ -13,6 +13,7 @@
   },
   "scripts": {
     "build": "npm install && npm install https://github.com/woor/discord.io/tarball/gateway_v6",
-    "start": "npm run build && node bot.js"
+    "start": "npm run build && node bot.js",
+    "heroku-prebuild": "echo This runs before Heroku installs your dependencies."
   }
 }
