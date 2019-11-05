@@ -1,5 +1,6 @@
 var redisClient = require('ioredis');
-
+let redisHost = process.env.redisHost;
+let redisPort = process.env.redisPort;
 module.exports = (function () {
     var connection = null;
     function connect(cb){
@@ -14,7 +15,7 @@ module.exports = (function () {
 
     function setConnection(cb){
         try{
-            connection = redisClient.createClient(6333, 'localhost');
+            connection = redisClient.createClient(redisPort, redisHost);
             connection.select(0);
             connection.on('ready',function(){
                 console.log("connection setup done");

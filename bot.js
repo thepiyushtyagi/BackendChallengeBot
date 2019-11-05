@@ -51,34 +51,49 @@ bot.on('message', function (user, userID, channelID, message, evt) {
                 });
                 break;
             case 'google':
-                request.get(googleSearchApi, function (err, resp, response) {
-                    if (err){
-                        return bot.sendMessage({
-                            to: channelID,
-                            message: `getting error ${err} in google search api`
-                        });
-                    }
-                    let topLinks = [];
-                    try{
-                        let topItems = JSON.parse(response).items;
-                        if (topItems){
-                            topItems.forEach((item) => {
-                                topLinks.push(item.link);
-                            });
-                        }
-                        topLinks.forEach((link) => {
+                redis.sMembers(searchString, function (err, data) {
+                    if (data && data.length > 0){
+                        console.log("google search data is from redis");
+                        data.forEach((link) => {
                             bot.sendMessage({
                                 to: channelID,
                                 message: link
                             });
                         })
-                    }catch (e) {
-                        return bot.sendMessage({
-                            to: channelID,
-                            message: `getting error ${e} in google search api`
-                        });
+                    } else{
+                        request.get(googleSearchApi, function (err, resp, response) {
+                            if (err){
+                                return bot.sendMessage({
+                                    to: channelID,
+                                    message: `getting error ${err} in google search api`
+                                });
+                            }
+                            let topLinks = [];
+                            try{
+                                let topItems = JSON.parse(response).items;
+                                if (topItems){
+                                    topItems.forEach((item) => {
+                                        topLinks.push(item.link);
+                                    });
+                                }
+                                topLinks.forEach((link) => {
+                                    redis.sAdd(searchString, link, function (e) {
+                                    });
+                                    bot.sendMessage({
+                                        to: channelID,
+                                        message: link
+                                    });
+                                });
+                                console.log("google search data is from api");
+                            }catch (e) {
+                                return bot.sendMessage({
+                                    to: channelID,
+                                    message: `getting error ${e} in google search api`
+                                });
+                            }
+                        })
                     }
-                })
+                });
                 break;
             case 'recent':
                 redis.keys(`*${searchString}*`, (err, data) => {
