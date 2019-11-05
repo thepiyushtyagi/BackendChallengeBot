@@ -1,13 +1,12 @@
 var Discord = require('discord.io');
 var logger = require('winston');
 let request = require('request');
-    // Configure logger settings
+let redis = require('./redis');
 logger.remove(logger.transports.Console);
 logger.add(new logger.transports.Console, {
     colorize: true
 });
 logger.level = 'debug';
-// Initialize Discord Bot
 var bot = new Discord.Client({
     token: process.env.token,
     autorun: true
@@ -80,8 +79,26 @@ bot.on('message', function (user, userID, channelID, message, evt) {
                         });
                     }
                 })
+                break;
+            case 'recent':
+                redis.keys(`*${searchString}*`, (err, data) => {
+                    if (err || !data){
+                        return bot.sendMessage({
+                            to: channelID,
+                            message: `getting error while fetching recent`
+                        });
+                    }
+                    data.forEach((history) => {
+                        bot.sendMessage({
+                            to: channelID,
+                            message: history
+                        });
+                    });
 
-            // Just add any case commands if you want to..
+                });
+                break;
+
+
         }
     }
 });
