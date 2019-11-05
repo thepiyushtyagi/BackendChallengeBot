@@ -14,7 +14,7 @@ module.exports = (function () {
 
     function setConnection(cb){
         try{
-            connection = redisClient.createClient(6379, 'localhost');
+            connection = redisClient.createClient(6333, 'localhost');
             connection.select(0);
             connection.on('ready',function(){
                 console.log("connection setup done");
