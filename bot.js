@@ -28,6 +28,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
         if (args.length > 0){
             searchString = args.join(' ')
             googleSearchApi += searchString;
+            googleSearchApi = encodeURI(googleSearchApi);
         }
         switch(cmd) {
 
